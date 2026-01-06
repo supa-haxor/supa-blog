@@ -56,7 +56,7 @@ The layout adapts deliberately across:
 
 Columns, spacing, font sizes, and structure change intentionally—not just scaled down.
 
-<img src="src/assets/images/mobile.png" alt="supa-blog-lookaround" width="320" />
+<br><img src="src/assets/images/mobile.png" alt="supa-blog-lookaround" width="320" />
 
 ### Minimalist Navigation
 - Navigation bar is hidden by default.
