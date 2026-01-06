@@ -55,6 +55,7 @@ The layout adapts deliberately across:
 - desktop
 
 Columns, spacing, font sizes, and structure change intentionally—not just scaled down.
+
 <img src="src/assets/images/mobile.png" alt="supa-blog-lookaround" width="320" />
 
 ### Minimalist Navigation
