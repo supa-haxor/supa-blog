@@ -6,7 +6,7 @@ Created out of necessity: existing Blogger templates were too rigid, visually co
 
 This project replaces templates entirely and treats Blogger strictly as a **content backend**, while the frontend is designed, structured, rendered, and deployed from scratch.
 
-[supa-blog-lookaround](src/assets/images/lookaround.png)
+![supa-blog-lookaround](src/assets/images/lookaround.png)
 
 ---
 
