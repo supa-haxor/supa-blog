@@ -1,6 +1,6 @@
 # supa-blog
 
-A fully custom personal blog engine built with **React**, powered by the **Blogger API**, and **deployed on Microsoft Azure**, using handcrafted CSS for complete control over layout and responsiveness.
+A fully custom personal blog engine built with `React`, powered by the `Blogger API`, and **deployed on `Microsoft Azure`**, using handcrafted `CSS` for complete control over layout and responsiveness.
 
 Created out of necessity: existing Blogger templates were too rigid, visually constrained, and hostile to precise UI control.
 
@@ -101,15 +101,6 @@ If you fork it, expect to adapt:
 - API keys
 - tag logic
 - styling rules
-
----
-
-## Screenshots
-
-Screenshots of both **desktop** and **mobile** layouts are included to illustrate:
-- responsive behavior
-- tag-based rendering
-- navigation interaction
 
 ---
 
