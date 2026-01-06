@@ -42,6 +42,7 @@ The project also serves as a concrete example of:
 - YouTube links included in posts are transformed into a **play-button UI element**.
 - Clicking the button opens the track in a new tab.
 - Used to convey the emotional tone of a post without embedding heavy players.
+![supa-blog-lookaround](src/assets/images/music.png)
 
 ### Fully Responsive by Design
 - No CSS frameworks.
