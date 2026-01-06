@@ -1,11 +1,13 @@
 import moment from 'moment';
 import parse from 'html-react-parser';
+import { obfuscateHtmlPreservingLinks } from '../../utils/obfuscate';
 
 import MusicButton from '../components/MusicButton'
 import './Post.scss'
 
 const Post = (({ post }) => {
     const replaceLinks = (htmlString) => {
+        const processedHtml = obfuscateHtmlPreservingLinks(htmlString);
         const options = {
             replace: (domNode) => {
                 if (domNode.name === 'a' && domNode.attribs && (domNode.attribs.href.includes('youtube.com') || domNode.attribs.href.includes('youtu.be') || domNode.attribs.href.includes('spotify.com'))) {
@@ -15,7 +17,7 @@ const Post = (({ post }) => {
                 }
             },
         };
-        return parse(htmlString, options);
+        return parse(processedHtml, options);
     };
 
     return (
