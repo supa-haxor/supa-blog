@@ -61,6 +61,8 @@ Columns, spacing, font sizes, and structure change intentionally—not just scal
 - Revealed via interaction with the logo.
 - Keeps focus on content while remaining accessible.
 
+![supa-blog-lookaround](src/assets/images/menu.png)
+
 ---
 
 ## Tech Stack
