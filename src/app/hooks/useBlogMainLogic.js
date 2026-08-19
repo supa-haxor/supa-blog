@@ -142,7 +142,7 @@ export const useBlogMainLogic = (mode = 'main', isActive = true, revealMenu = fa
     useEffect(() => {
         if (!posts.length && !fetchingPosts)
             getPosts().then(() => {
-                if (!isActive || checkIfMobile()) return
+                if (!isActive) return
                 setTimeout(() => {
                     setShowMenu(false)
                 }, 3500)
@@ -152,7 +152,6 @@ export const useBlogMainLogic = (mode = 'main', isActive = true, revealMenu = fa
     useEffect(() => {
         if (!isActive || !revealMenu) return
         setShowMenu(true)
-        if (checkIfMobile()) return
         const timer = setTimeout(() => {
             setShowMenu(false)
         }, 3500)

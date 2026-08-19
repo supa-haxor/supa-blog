@@ -3,7 +3,9 @@
     "rewrite": "/index.html",
     "exclude": [
       "/static/*",
-      "/static/**",
+      "/static/js/*",
+      "/static/css/*",
+      "/static/media/*",
       "/icons/*",
       "/*.{js,css,map,png,jpg,gif,ico,svg,txt,json,woff,woff2,ttf}"
     ]
