@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import './NavBarMenu.scss'
 import Link from './Link'
+import { navigateInApp } from '../../utils/navigate'
 
-const NavBarMenu = (({ showMenu, onClick, onHeightMenuChange, onOpenLink, isMobile }) => {
+const NavBarMenu = (({ mode = 'main', showMenu, onClick, onHeightMenuChange, onOpenLink }) => {
     const menuRef = useRef(null);
     const [styles, setStyles] = useState({})
     const [selectedItem, setSelectedItem] = useState('home')
@@ -17,18 +17,10 @@ const NavBarMenu = (({ showMenu, onClick, onHeightMenuChange, onOpenLink, isMobi
 
     const updateStyles = () => {
         const clientHeight = menuRef?.current?.clientHeight;
-        let transition
-        if (isMobile)
-            transition = 'margin-top 0.6s cubic-bezier(0.34, 1.3, 0.64, 1)'
-        else
-            transition = !showMenu ? 'margin-top .6s cubic-bezier(0.25, 0.6, 0.25, 1)' : 'margin-top 0.6s cubic-bezier(0.34, 1.3, 0.64, 1)'
-
-        transition += ',opacity .5s ease-in-out'
 
         if (clientHeight) {
           setStyles({
             marginTop: showMenu ? 0 : ((clientHeight + 30) * -1),
-            transition
           });
           onHeightMenuChange(clientHeight + 30)
         }
@@ -64,18 +56,33 @@ const NavBarMenu = (({ showMenu, onClick, onHeightMenuChange, onOpenLink, isMobi
             >
                     home
             </div>
-            <div 
-                onClick={() => triggerSearch(null, '8664796053498369069')}
-                className={selectedItem === '8664796053498369069' ? 'selected' : ''}
-            >
+            {mode === 'archive' ? (
+                <div 
+                    onClick={() => triggerSearch(null, '8664796053498369069')}
+                    className={selectedItem === '8664796053498369069' ? 'selected' : ''}
+                >
                     about
-            </div>
-            <div 
-                onClick={() => triggerSearch('scripture')}
-                className={selectedItem === 'scripture' ? 'selected' : ''}
-            >
-                    tags
-            </div>
+                </div>
+            ) : (
+                <Link
+                    label="about"
+                    href="https://supa-haxor.com"
+                    onClick={onOpenLink}
+                />
+            )}
+            {mode === 'archive' && (
+                <div 
+                    onClick={() => triggerSearch('scripture')}
+                    className={selectedItem === 'scripture' ? 'selected' : ''}
+                >
+                    scriptures
+                </div>
+            )}
+            {mode === 'archive' ? (
+                <a href="/" onClick={(e) => { e.preventDefault(); navigateInApp('/'); }}>today</a>
+            ) : (
+                <a href="/archive" onClick={(e) => { e.preventDefault(); navigateInApp('/archive'); }}>archive</a>
+            )}
             
             <Link 
                 label="X"
@@ -92,11 +99,6 @@ const NavBarMenu = (({ showMenu, onClick, onHeightMenuChange, onOpenLink, isMobi
                 href="https://youtube.com/@supahaxor"
                 onClick={onOpenLink}
             />
-            <Link 
-                label="github"
-                href="https://github.com/supa-haxor"
-                onClick={onOpenLink}
-            />                
         </div>
     )
 })

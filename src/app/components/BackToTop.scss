@@ -1,0 +1,36 @@
+.back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 28px;
+    z-index: 10;
+    padding: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: faceless;
+    font-size: 1.8em;
+    line-height: 1;
+    color: #d7d7d7;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease, color 0.3s;
+
+    &.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    &:hover {
+        color: #000000bf;
+    }
+}
+
+@media (max-width: 1080px) {
+    .back-to-top {
+        top: 16px;
+        bottom: auto;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+    }
+}

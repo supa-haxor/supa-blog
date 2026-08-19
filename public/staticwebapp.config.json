@@ -1,0 +1,16 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/static/*",
+      "/static/**",
+      "/icons/*",
+      "/*.{js,css,map,png,jpg,gif,ico,svg,txt,json,woff,woff2,ttf}"
+    ]
+  },
+  "mimeTypes": {
+    ".js": "text/javascript",
+    ".mjs": "text/javascript",
+    ".css": "text/css"
+  }
+}

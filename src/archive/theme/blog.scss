@@ -17,7 +17,7 @@
     text-align: center;
     font-family: canterbury;
     font-size: 14px;
-    color: #e3e3e3;
+    color: #765e84;
     z-index: 2;
     opacity: 0;
     pointer-events: none;
@@ -29,12 +29,12 @@
     }
 
     > a {
-        color: #d7d7d7;
+        color: #765e84;
         text-decoration: none;
         transition: color .3s;
 
         &:hover {
-            color: #acacac;
+            color: #000000bf;
         }
     }
 }

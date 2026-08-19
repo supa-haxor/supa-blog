@@ -1,0 +1,22 @@
+.music-button {
+    width: 60px;
+    height: 30px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #a27bb7;
+    border-radius: 20px;
+    color: #a27bb7;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: Inter var experimental, Inter var, Inter, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Apple Color emoji;
+    justify-content: center;
+    text-decoration: none;
+    .fa.fa-play{
+        margin-right: 4px;
+    }
+    &:hover {
+        border: #562e6b solid 1px;
+        color: #562e6b;
+    }
+}

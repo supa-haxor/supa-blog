@@ -1,0 +1,45 @@
+body.is-leaving-down {
+    overflow: hidden;
+
+    .page-container {
+        animation: page-leave-down 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+}
+
+body.enter-from-below .page-container,
+.enter-from-below .page-container,
+.page-container.enter-from-below {
+    animation: page-enter-from-below 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.route-hidden {
+    display: none !important;
+
+    .page-container {
+        animation: none !important;
+        transform: none !important;
+        opacity: 1 !important;
+    }
+}
+
+@keyframes page-leave-down {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(8vh);
+    }
+}
+
+@keyframes page-enter-from-below {
+    from {
+        opacity: 0;
+        transform: translateY(8vh);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

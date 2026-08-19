@@ -1,16 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/fonts.scss';
-import './styles/blog.scss';
-import Blog from './app/Blog';
-import Home from './app/Home';
-import { getSurface } from './utils/surface';
+import App from './app/App';
+import { preparePageBackground } from './utils/navigate';
 
-const App = () => {
-  return getSurface() === 'blog' ? <Blog></Blog> : <Home></Home>
+const isArchive = window.location.pathname.replace(/\/+$/, '') === '/archive';
+
+preparePageBackground(isArchive);
+document.title = isArchive ? "supa hax0r's archives" : 'nomoredrama.co';
+
+if (isArchive) {
+  require('./archive/theme/index.scss');
+} else {
+  require('./styles/index.scss');
 }
 
 ReactDOM.render(
-  <App></App>,
+  <App mode={isArchive ? 'archive' : 'main'} />,
   document.querySelector('#supa-blog')
 )

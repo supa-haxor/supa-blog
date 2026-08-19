@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { getConfig } from '../../utils/config';
 import { checkIfMobile } from '../../utils/deviceUtils';
 
-export const useBlogMainLogic = () => {
+export const useBlogMainLogic = (mode = 'main', isActive = true, revealMenu = false) => {
   // State variables
   const [posts, setPosts] = useState([]);
   const [nextPageToken, setNextPageToken] = useState('');
@@ -12,14 +12,19 @@ export const useBlogMainLogic = () => {
   const [blogTag, setBlogTag] = useState(null);
   const [menuHeight, setMenuHeight] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
-  const { blogId, apiKey } = getConfig();
+  const { blogId, apiKey } = getConfig(mode);
 
 
   const postsRef = useRef(null);
 
   const toggleMenu = useCallback(() => setShowMenu(prev => !prev), []);
   const updateHeightMenu = useCallback((height) => setMenuHeight(height), []);
+  const scrollToTop = useCallback(() => {
+    postsRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   const getPosts = useCallback((newSearch, tag, pageId = null) => {
     if (newSearch)
@@ -86,6 +91,10 @@ export const useBlogMainLogic = () => {
     const handleScroll = useCallback((e) => {
         const target = e.target.scrollingElement || e.target;
         const { scrollTop, clientHeight, scrollHeight } = target;
+        const postsTop = postsRef.current ? postsRef.current.scrollTop : 0;
+        const winTop = window.scrollY || document.documentElement.scrollTop || 0;
+
+        setShowBackToTop(Math.max(scrollTop, postsTop, winTop) >= window.innerHeight);
 
         if (isMobile && menuHeight && scrollTop > menuHeight) {
             setShowMenu(false);
@@ -133,12 +142,22 @@ export const useBlogMainLogic = () => {
     useEffect(() => {
         if (!posts.length && !fetchingPosts)
             getPosts().then(() => {
-                if (!checkIfMobile())
-                    setTimeout(() => {
-                        setShowMenu(false)
-                    }, 5000)
+                if (!isActive || checkIfMobile()) return
+                setTimeout(() => {
+                    setShowMenu(false)
+                }, 3500)
             });
-    }, [posts.length, fetchingPosts, getPosts]);
+    }, [posts.length, fetchingPosts, getPosts, mode, isActive]);
+
+    useEffect(() => {
+        if (!isActive || !revealMenu) return
+        setShowMenu(true)
+        if (checkIfMobile()) return
+        const timer = setTimeout(() => {
+            setShowMenu(false)
+        }, 3500)
+        return () => clearTimeout(timer)
+    }, [isActive, revealMenu, mode]);
 
   return {
     posts,
@@ -149,6 +168,8 @@ export const useBlogMainLogic = () => {
     toggleMenu,
     updateHeightMenu,
     getPosts,
-    setShowMenu
+    setShowMenu,
+    showBackToTop,
+    scrollToTop
   };
 };

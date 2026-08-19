@@ -1,5 +1,3 @@
-import './MusicButton.scss'
-
 const MusicButton = (({ href }) => {
     return (
         <a 

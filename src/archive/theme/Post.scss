@@ -1,5 +1,5 @@
 .post {
-    background-color: #f9f9f9;
+    background-color: #ffffff;
     padding: 30px 50px;
     border-radius: 8px;
     margin-bottom: 18px;
@@ -41,7 +41,7 @@
             color: inherit;
             text-decoration: underline;
             text-underline-offset: 3px;
-            text-decoration-color: #d7d7d7;
+            text-decoration-color: #765e84;
             transition: color .3s, text-decoration-color .3s;
             &:hover {
                 color: #000000bf;
@@ -50,7 +50,7 @@
         }
     }
     &.scripture {
-        // box-shadow: #f6e27a 1px 1px 12px;
+        box-shadow: #f6e27a 1px 1px 12px;
         transition: box-shadow 1s ease-out;
         animation: boxShadowAnimation 2s infinite alternate;
         > span.date, > a.date {
@@ -95,11 +95,11 @@
     }
 }
 
-// @keyframes boxShadowAnimation {
-//     from {
-//         box-shadow: #f6e27a 1px 1px 2px;
-//     }
-//     to {
-//         box-shadow: #f6e27a 1px 1px 12px;
-//     }
-//   }
+@keyframes boxShadowAnimation {
+    from {
+        box-shadow: #f6e27a 1px 1px 2px;
+    }
+    to {
+        box-shadow: #f6e27a 1px 1px 12px;
+    }
+  }

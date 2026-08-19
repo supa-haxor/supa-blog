@@ -1,10 +1,9 @@
 import { useRef } from 'react';
 import Post from './Post'
-import './Posts.scss'
 
-const RenderedPosts = (({ posts }) => {
+const RenderedPosts = (({ posts, mode }) => {
     const renderedPosts = posts.map(post => {
-        return <Post key={post.id} post={post}/> 
+        return <Post key={post.id} post={post} mode={mode} linkTitle /> 
     })
 
     return renderedPosts
@@ -19,7 +18,7 @@ const Loading = (({ showLoading }) => {
     return null
 })
 
-const Posts = (({ posts, showLoading }) => {
+const Posts = (({ posts, showLoading, mode }) => {
     const postsRef = useRef(null)
 
     if (!posts || !posts.length)
@@ -31,7 +30,7 @@ const Posts = (({ posts, showLoading }) => {
         
     return (
         <div className={ posts.length ? 'shown' : '' } ref={ postsRef }>
-            <RenderedPosts posts={ posts } />
+            <RenderedPosts posts={ posts } mode={ mode } />
             <Loading showLoading={ showLoading } />
         </div>
     )
