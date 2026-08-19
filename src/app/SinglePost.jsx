@@ -4,7 +4,6 @@ import Post from './components/Post'
 import { useSinglePost } from './hooks/useSinglePost'
 import { consumePendingEnterPost, navigateInApp } from '../utils/navigate'
 import { homeHref } from '../utils/routes'
-import { checkIfMobile } from '../utils/deviceUtils'
 import archiveLogo from '../assets/images/l33t_supa_h4x0r_icon.svg'
 
 const SinglePost = ({ mode, postId }) => {
@@ -25,7 +24,7 @@ const SinglePost = ({ mode, postId }) => {
         const page = pageRef.current;
         const onScroll = () => {
             const scrolled = Math.max(page?.scrollTop || 0, window.scrollY || 0);
-            setShowMiniBar(checkIfMobile() && scrolled > 120);
+            setShowMiniBar(scrolled > 120);
         };
         page?.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('scroll', onScroll, { passive: true });
@@ -55,6 +54,8 @@ const SinglePost = ({ mode, postId }) => {
                     <Banner
                         onClick={goHome}
                         onMiniClick={scrollToTop}
+                        onBack={goHome}
+                        showBack
                         mini={showMiniBar}
                         icon={mode === 'archive' ? archiveLogo : undefined}
                     />

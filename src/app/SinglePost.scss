@@ -2,10 +2,13 @@
     flex-direction: column;
     align-items: center;
     overflow: auto;
+    --post-text-inset: 32px;
 
     #banner {
-        width: auto;
-        padding: 64px 30px 0;
+        --banner-pad-top: 64px;
+        width: 100%;
+        max-width: 1080px;
+        padding: var(--banner-pad-top) 0 0;
         position: relative;
         background: transparent;
 
@@ -13,7 +16,17 @@
             display: none;
         }
 
-        > svg {
+        .back-home {
+            right: auto;
+            left: var(--post-text-inset);
+            top: var(--banner-pad-top);
+            bottom: 0;
+            transform: none;
+            display: flex;
+            align-items: center;
+        }
+
+        svg {
             width: 120px;
             height: 120px;
             margin: 0;
@@ -133,6 +146,7 @@
 
 @media (max-width: 1080px) {
     .page-container.single {
+        --post-text-inset: 110px;
         #posts {
             padding: 4px 60px 40px;
         }
@@ -145,10 +159,12 @@
 
 @media (max-width: 820px) {
     .page-container.single {
+        --post-text-inset: 32px;
         #banner {
-            padding: 52px 16px 0;
+            --banner-pad-top: 52px;
+            padding: 52px 0 0;
 
-            > svg {
+            svg {
                 width: 90px;
                 height: 90px;
                 margin: 0;
@@ -178,7 +194,8 @@
 @media (max-width: 480px) {
     .page-container.single {
         #banner {
-            padding: 44px 8px 0;
+            --banner-pad-top: 44px;
+            padding: 44px 0 0;
         }
 
         #posts {
