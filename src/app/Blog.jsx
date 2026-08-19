@@ -21,7 +21,9 @@ const Blog = ({ mode = 'main', isActive = true, revealMenu = false }) => {
         getPosts,
         setShowMenu,
         showBackToTop,
+        showMiniBar,
         scrollToTop,
+        openMenuFromMini,
     } = useBlogMainLogic(mode, isActive, revealMenu);
 
     return (
@@ -29,7 +31,9 @@ const Blog = ({ mode = 'main', isActive = true, revealMenu = false }) => {
             <div className="header-wrapper">
                 <Banner 
                     onClick={toggleMenu}
+                    onMiniClick={openMenuFromMini}
                     icon={mode === 'archive' ? archiveLogo : undefined}
+                    mini={showMiniBar}
                 />
                 <NavBarMenu 
                     mode={mode}

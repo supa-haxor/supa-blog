@@ -14,27 +14,37 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
+    env:
+      REACT_APP_BLOGGER_ID: ${{ secrets.REACT_APP_BLOGGER_ID }}
+      REACT_APP_BLOGGER_API_KEY: ${{ secrets.REACT_APP_BLOGGER_API_KEY }}
+      REACT_APP_MAIN_BLOGGER_ID: ${{ secrets.REACT_APP_MAIN_BLOGGER_ID }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Build And Deploy
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
-        env:
-          REACT_APP_BLOGGER_ID: ${{ secrets.REACT_APP_BLOGGER_ID }}
-          REACT_APP_BLOGGER_API_KEY: ${{ secrets.REACT_APP_BLOGGER_API_KEY }}
-          REACT_APP_MAIN_BLOGGER_ID: ${{ secrets.REACT_APP_MAIN_BLOGGER_ID }}
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PURPLE_WATER_0C7BC5110 }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: "build" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
+          app_location: "build"
+          api_location: ""
+          skip_app_build: true
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

@@ -13,11 +13,23 @@ export const useBlogMainLogic = (mode = 'main', isActive = true, revealMenu = fa
   const [menuHeight, setMenuHeight] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [showMiniBar, setShowMiniBar] = useState(false);
 
   const { blogId, apiKey } = getConfig(mode);
 
 
   const postsRef = useRef(null);
+  const openMenuAtTop = useRef(false);
+  const menuCloseTimer = useRef(null);
+  const MENU_CLOSE_MS = 2500;
+
+  const scheduleMenuClose = useCallback(() => {
+    if (menuCloseTimer.current) window.clearTimeout(menuCloseTimer.current);
+    menuCloseTimer.current = window.setTimeout(() => {
+      setShowMenu(false);
+      menuCloseTimer.current = null;
+    }, MENU_CLOSE_MS);
+  }, []);
 
   const toggleMenu = useCallback(() => setShowMenu(prev => !prev), []);
   const updateHeightMenu = useCallback((height) => setMenuHeight(height), []);
@@ -25,6 +37,17 @@ export const useBlogMainLogic = (mode = 'main', isActive = true, revealMenu = fa
     postsRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
+  const openMenuFromMini = useCallback(() => {
+    const postsTop = postsRef.current?.scrollTop || 0;
+    const winTop = window.scrollY || document.documentElement.scrollTop || 0;
+    if (Math.max(postsTop, winTop) <= 8) {
+      setShowMenu(true);
+      scheduleMenuClose();
+      return;
+    }
+    openMenuAtTop.current = true;
+    scrollToTop();
+  }, [scrollToTop, scheduleMenuClose]);
 
   const getPosts = useCallback((newSearch, tag, pageId = null) => {
     if (newSearch)
@@ -94,16 +117,22 @@ export const useBlogMainLogic = (mode = 'main', isActive = true, revealMenu = fa
         const postsTop = postsRef.current ? postsRef.current.scrollTop : 0;
         const winTop = window.scrollY || document.documentElement.scrollTop || 0;
 
-        setShowBackToTop(Math.max(scrollTop, postsTop, winTop) >= window.innerHeight);
+        const scrolled = Math.max(scrollTop, postsTop, winTop);
+        setShowBackToTop(scrolled >= window.innerHeight);
+        setShowMiniBar(isMobile && scrolled > 120);
 
-        if (isMobile && menuHeight && scrollTop > menuHeight) {
+        if (openMenuAtTop.current && scrolled <= 8) {
+            openMenuAtTop.current = false;
+            setShowMenu(true);
+            scheduleMenuClose();
+        } else if (isMobile && menuHeight && scrollTop > menuHeight) {
             setShowMenu(false);
         }
 
         if (showLoading && !fetchingPosts && scrollTop + clientHeight >= scrollHeight - 200) {
             getPosts();
         }
-    }, [isMobile, menuHeight, showLoading, fetchingPosts, getPosts]);
+    }, [isMobile, menuHeight, showLoading, fetchingPosts, getPosts, scheduleMenuClose]);
 
     // this listens for resize events on the window
     useEffect(() => {
@@ -113,6 +142,7 @@ export const useBlogMainLogic = (mode = 'main', isActive = true, revealMenu = fa
         const handleResize = () => {
             isMobileLocal = checkIfMobile();
             setIsMobile(isMobileLocal);
+            if (!isMobileLocal) setShowMiniBar(false);
         };
 
         window.addEventListener('resize', handleResize);
@@ -143,20 +173,18 @@ export const useBlogMainLogic = (mode = 'main', isActive = true, revealMenu = fa
         if (!posts.length && !fetchingPosts)
             getPosts().then(() => {
                 if (!isActive) return
-                setTimeout(() => {
-                    setShowMenu(false)
-                }, 3500)
+                scheduleMenuClose();
             });
-    }, [posts.length, fetchingPosts, getPosts, mode, isActive]);
+    }, [posts.length, fetchingPosts, getPosts, mode, isActive, scheduleMenuClose]);
 
     useEffect(() => {
         if (!isActive || !revealMenu) return
         setShowMenu(true)
-        const timer = setTimeout(() => {
-            setShowMenu(false)
-        }, 3500)
-        return () => clearTimeout(timer)
-    }, [isActive, revealMenu, mode]);
+        scheduleMenuClose();
+        return () => {
+            if (menuCloseTimer.current) window.clearTimeout(menuCloseTimer.current);
+        }
+    }, [isActive, revealMenu, mode, scheduleMenuClose]);
 
   return {
     posts,
@@ -169,6 +197,8 @@ export const useBlogMainLogic = (mode = 'main', isActive = true, revealMenu = fa
     getPosts,
     setShowMenu,
     showBackToTop,
-    scrollToTop
+    showMiniBar,
+    scrollToTop,
+    openMenuFromMini
   };
 };

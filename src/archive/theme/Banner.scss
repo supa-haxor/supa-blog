@@ -23,6 +23,10 @@
     }
 }
 
+.mini-banner {
+    display: none;
+}
+
 @media (max-width: 1560px) {
     #banner > svg {
             height: 140px;
@@ -36,29 +40,57 @@
 
 @media (max-width: 1080px) {
     #banner {
-        padding-top: 30px;
-        padding-left: unset;
-        padding : 30px;
+        position: relative;
+        padding: 30px 16px 0;
         > svg {
             height: 140px;
             width: 140px;
+            margin-top: 50px;
             > image{
                 height: 140px;
                 width: 140px;
             }
         }
     }
+
+    .mini-banner {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 12;
+        height: 48px;
+        align-items: center;
+        justify-content: center;
+        background: #a27bb7;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-6px);
+        transition: opacity 0.35s ease, transform 0.35s ease;
+
+        &.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        > svg {
+            width: 36px;
+            height: 36px;
+        }
+    }
 }
 
 @media (max-width: 820px) {
     #banner {
-        padding-top: 30px;
-        height: 100px;
-        padding-left: unset;
-        padding: 30px;
+        height: auto;
+        padding: 30px 16px 0;
         > svg {
             height: 100px;
             width: 100px;
+            margin-top: 50px;
             > image{
                 height: 100%;
                 width: 100%;
