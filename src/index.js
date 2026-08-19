@@ -6,15 +6,16 @@ import { preparePageBackground } from './utils/navigate';
 const isArchive = window.location.pathname.replace(/\/+$/, '') === '/archive';
 
 preparePageBackground(isArchive);
+document.documentElement.classList.add(isArchive ? 'is-archive' : 'is-main');
 document.title = isArchive ? "supa hax0r's archives" : 'nomoredrama.co';
 
-if (isArchive) {
-  require('./archive/theme/index.scss');
-} else {
-  require('./styles/index.scss');
-}
+const theme = isArchive
+  ? import('./archive/theme/index.scss')
+  : import('./styles/index.scss');
 
-ReactDOM.render(
-  <App mode={isArchive ? 'archive' : 'main'} />,
-  document.querySelector('#supa-blog')
-)
+theme.then(() => {
+  ReactDOM.render(
+    <App mode={isArchive ? 'archive' : 'main'} />,
+    document.querySelector('#supa-blog')
+  );
+});
