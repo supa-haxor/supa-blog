@@ -8,6 +8,7 @@ import NavBarMenu from './components/NavBarMenu'
 import Posts from './components/Posts'
 import BackToTop from './components/BackToTop'
 import { useBlogMainLogic } from './hooks/useBlogMainLogic';
+import { navigateInApp } from '../utils/navigate';
 import archiveLogo from '../assets/images/l33t_supa_h4x0r_icon.svg'
 
 const Blog = ({ mode = 'main', isActive = true, revealMenu = false }) => {
@@ -24,6 +25,7 @@ const Blog = ({ mode = 'main', isActive = true, revealMenu = false }) => {
         showMiniBar,
         scrollToTop,
         openMenuFromMini,
+        isPage,
     } = useBlogMainLogic(mode, isActive, revealMenu);
 
     return (
@@ -45,6 +47,18 @@ const Blog = ({ mode = 'main', isActive = true, revealMenu = false }) => {
                 <p className={`site-credit ${showMenu ? 'visible' : ''}`}>
                     made with love by Cursor and the{' '}
                     <a target="_blank" rel="noopener noreferrer" href="https://github.com/supa-haxor">@supa-haxor</a>
+                    {mode !== 'archive' && (
+                        <>
+                            {' '}
+                            <a
+                                className="secret-archive"
+                                href="/archive"
+                                onClick={(e) => { e.preventDefault(); navigateInApp('/archive'); }}
+                            >
+                                then
+                            </a>
+                        </>
+                    )}
                 </p>
             </div>
             <div ref={postsRef} id="posts">
@@ -52,6 +66,7 @@ const Blog = ({ mode = 'main', isActive = true, revealMenu = false }) => {
                     posts={posts}
                     showLoading={showLoading}
                     mode={mode}
+                    linkTitle={!isPage}
                 />
             </div>
             <BackToTop visible={showBackToTop} onClick={scrollToTop} />

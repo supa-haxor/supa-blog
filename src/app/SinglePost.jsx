@@ -63,16 +63,30 @@ const SinglePost = ({ mode, postId }) => {
                         <Post post={post} />
                     </div>
                     <footer className="single-footer">
-                        <div className="single-footer-links">
-                            <a target="_blank" rel="noopener noreferrer" href="https://supa-haxor.com">about</a>
-                            <a target="_blank" rel="noopener noreferrer" href="https://x.com/supa_haxor">X</a>
-                            <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/supa_haxor">insta</a>
-                            <a target="_blank" rel="noopener noreferrer" href="https://youtube.com/@supahaxor">youtube</a>
-                        </div>
+                        {mode !== 'archive' && (
+                            <div className="single-footer-links">
+                                <a target="_blank" rel="noopener noreferrer" href="https://supa-haxor.com">about</a>
+                                <a target="_blank" rel="noopener noreferrer" href="https://x.com/supa_haxor">X</a>
+                                <a target="_blank" rel="noopener noreferrer" href="https://instagram.com/supa_haxor">insta</a>
+                                <a target="_blank" rel="noopener noreferrer" href="https://youtube.com/@supahaxor">youtube</a>
+                            </div>
+                        )}
                         <p className="single-footer-slogan">siendo usted mismo, así duela</p>
                         <p className="single-footer-credit">
                             made with love by Cursor and the{' '}
                             <a target="_blank" rel="noopener noreferrer" href="https://github.com/supa-haxor">@supa-haxor</a>
+                            {mode !== 'archive' && (
+                                <>
+                                    {' '}
+                                    <a
+                                        className="secret-archive"
+                                        href="/archive"
+                                        onClick={(e) => { e.preventDefault(); navigateInApp('/archive'); }}
+                                    >
+                                        then
+                                    </a>
+                                </>
+                            )}
                         </p>
                     </footer>
                 </>

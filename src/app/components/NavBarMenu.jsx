@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from './Link'
 import { navigateInApp } from '../../utils/navigate'
+import { getConfig } from '../../utils/config'
 
 const NavBarMenu = (({ mode = 'main', showMenu, onClick, onHeightMenuChange, onOpenLink }) => {
     const menuRef = useRef(null);
     const [styles, setStyles] = useState({})
     const [selectedItem, setSelectedItem] = useState('home')
+    const { aboutPageId } = getConfig(mode)
 
     const triggerSearch = ((tag, pageId = null) => {
         setSelectedItem(tag || pageId)
@@ -16,14 +18,20 @@ const NavBarMenu = (({ mode = 'main', showMenu, onClick, onHeightMenuChange, onO
     })
 
     const updateStyles = () => {
-        const clientHeight = menuRef?.current?.clientHeight;
+        const menu = menuRef?.current;
+        if (!menu) return;
 
-        if (clientHeight) {
-          setStyles({
-            marginTop: showMenu ? 0 : ((clientHeight + 30) * -1),
-          });
-          onHeightMenuChange(clientHeight + 30)
-        }
+        const clientHeight = menu.clientHeight;
+        if (!clientHeight) return;
+
+        // keep CSS bottom margin when open; when closed collapse exactly
+        // so posts don't climb into #banner (the old +30 overshot on mobile)
+        setStyles(
+            showMenu
+                ? { marginTop: 0, marginBottom: '' }
+                : { marginTop: -clientHeight, marginBottom: 0 }
+        );
+        onHeightMenuChange(clientHeight);
     };
 
     useEffect(() => {
@@ -56,10 +64,10 @@ const NavBarMenu = (({ mode = 'main', showMenu, onClick, onHeightMenuChange, onO
             >
                     home
             </div>
-            {mode === 'archive' ? (
+            {aboutPageId ? (
                 <div 
-                    onClick={() => triggerSearch(null, '8664796053498369069')}
-                    className={selectedItem === '8664796053498369069' ? 'selected' : ''}
+                    onClick={() => triggerSearch(null, aboutPageId)}
+                    className={selectedItem === aboutPageId ? 'selected' : ''}
                 >
                     about
                 </div>
@@ -78,27 +86,28 @@ const NavBarMenu = (({ mode = 'main', showMenu, onClick, onHeightMenuChange, onO
                     scriptures
                 </div>
             )}
-            {mode === 'archive' ? (
-                <a href="/" onClick={(e) => { e.preventDefault(); navigateInApp('/'); }}>today</a>
-            ) : (
-                <a href="/archive" onClick={(e) => { e.preventDefault(); navigateInApp('/archive'); }}>archive</a>
+            {mode === 'archive' && (
+                <a href="/" onClick={(e) => { e.preventDefault(); navigateInApp('/'); }}>back</a>
             )}
-            
-            <Link 
-                label="X"
-                href="https://x.com/supa_haxor"
-                onClick={onOpenLink}
-            />
-            <Link 
-                label="insta"
-                href="https://instagram.com/supa_haxor"
-                onClick={onOpenLink}
-            />
-            <Link 
-                label="youtube"
-                href="https://youtube.com/@supahaxor"
-                onClick={onOpenLink}
-            />
+            {mode !== 'archive' && (
+                <>
+                    <Link 
+                        label="X"
+                        href="https://x.com/supa_haxor"
+                        onClick={onOpenLink}
+                    />
+                    <Link 
+                        label="insta"
+                        href="https://instagram.com/supa_haxor"
+                        onClick={onOpenLink}
+                    />
+                    <Link 
+                        label="youtube"
+                        href="https://youtube.com/@supahaxor"
+                        onClick={onOpenLink}
+                    />
+                </>
+            )}
         </div>
     )
 })

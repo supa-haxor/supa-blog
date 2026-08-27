@@ -14,6 +14,7 @@ export const useBlogMainLogic = (mode = 'main', isActive = true, revealMenu = fa
   const [isMobile, setIsMobile] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [showMiniBar, setShowMiniBar] = useState(false);
+  const [isPage, setIsPage] = useState(false);
 
   const { blogId, apiKey } = getConfig(mode);
 
@@ -65,8 +66,11 @@ export const useBlogMainLogic = (mode = 'main', isActive = true, revealMenu = fa
 
         if (pageId) {
             url = `https://www.googleapis.com/blogger/v3/blogs/${blogId}/pages/${pageId}?key=${apiKey}`;
-        } else if (tag)
-            url += `&labels=${tag}`;
+            setIsPage(true)
+        } else {
+            setIsPage(false)
+            if (tag) url += `&labels=${tag}`;
+        }
     }
     // if this is not a new search, then we need to append the nextPageToken to the url
     else {
@@ -199,6 +203,7 @@ export const useBlogMainLogic = (mode = 'main', isActive = true, revealMenu = fa
     showBackToTop,
     showMiniBar,
     scrollToTop,
-    openMenuFromMini
+    openMenuFromMini,
+    isPage
   };
 };
